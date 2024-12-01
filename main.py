@@ -23,7 +23,7 @@ def load_user(user_id):
 class Base(DeclarativeBase):
     pass
 
-app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///C:/Users/ganes/PycharmProjects/pythonProject21/instance/user1.db"
+app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///C:/Users/ganes/PycharmProjects/pythonProject21/instance/user2.db"
 db=SQLAlchemy(model_class=Base)
 db.init_app(app)
 
@@ -39,14 +39,14 @@ with app.app_context():
 
 
 
-    # data=Users(
-    #     name="Ganesh katamreddy",
-    #     email="ganeshreddyk8g@gmail.com",
-    #     password="k.ganesh789"
-    # )
+data=Users(
+        name="Ganesh katamreddy",
+        email="ganeshreddyk8g@gmail.com",
+        password="k.ganesh789"
+    )
 # with app.app_context():
-# db.session.add(data)
-    # db.session.commit()
+#     db.session.add(data)
+#     db.session.commit()
 
 
 

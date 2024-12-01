@@ -6,12 +6,12 @@ from sqlalchemy.orm import DeclarativeBase, Mapped,mapped_column
 from sqlalchemy import Integer,String
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import login_user,LoginManager,current_user,logout_user,UserMixin
-
+import os
 
 
 app=Flask(__name__)
 Bootstrap5(app)
-app.config["SECRET_KEY"]="ganeshreddy"
+app.config["SECRET_KEY"]=os.environ.get("FLASK_KEY21")
 
 login_manager=LoginManager()
 login_manager.init_app(app)
@@ -23,7 +23,7 @@ def load_user(user_id):
 class Base(DeclarativeBase):
     pass
 
-app.config["SQLALCHEMY_DATABASE_URI"]="sqlite:///C:/Users/ganes/PycharmProjects/pythonProject21/instance/user2.db"
+app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DB_URI21","sqlite:///C:/Users/ganes/PycharmProjects/pythonProject21/instance/user2.db")
 db=SQLAlchemy(model_class=Base)
 db.init_app(app)
 

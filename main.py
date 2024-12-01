@@ -22,6 +22,7 @@ def load_user(user_id):
 
 class Base(DeclarativeBase):
     pass
+# 21
 
 app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DB_URI21","sqlite:///C:/Users/ganes/PycharmProjects/pythonProject21/instance/user2.db")
 db=SQLAlchemy(model_class=Base)

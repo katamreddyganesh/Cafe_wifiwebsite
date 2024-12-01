@@ -1,0 +1,40 @@
+{% include "header.html" %}
+
+
+    <div class="container">
+        {% for i in data:%}
+
+<a href="{{ url_for('post',post_id=i.id) }}" class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+      <img src="{{i.img_url}}" alt="twbs" width="120" height="120">
+      <div class="d-flex gap-2 w-100 justify-content-between">
+        <div>
+          <h6 class="mb-0">{{i.name}} cafe</h6>
+          <p class="mb-0 opacity-75">location:{{i.location}}</p>
+          <p class="mb-0 opacity-75">coffee_price:{{i.coffee_price}}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cup" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M.11 3.187A.5.5 0 0 1 .5 3h13a.5.5 0 0 1 .488.608l-.22.991a3.001 3.001 0 0 1-1.3 5.854l-.132.59A2.5 2.5 0 0 1 9.896 13H4.104a2.5 2.5 0 0 1-2.44-1.958L.012 3.608a.5.5 0 0 1 .098-.42Zm12.574 6.288a2 2 0 0 0 .866-3.899zM1.124 4l1.516 6.825A1.5 1.5 0 0 0 4.104 12h5.792a1.5 1.5 0 0 0 1.464-1.175L12.877 4H1.123Z"/>
+          </svg></p>
+          <p class="mb-0 opacity-75">wifi:{{i.has_wifi}}</p>
+          <p class="mb-0 opacity-75">sockets:{{i.has_sockets}}</p>
+
+        </div>
+
+      </div>
+    </a>
+        {% if current_user.id==1 %}
+    <a href="{{url_for('delete_cafe',post_id=i.id)}}">
+        <p><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+            </svg></p>
+    </a>
+        {% endif %}
+    <a href="{{url_for('add_cafe')}}">
+        {%endfor%}
+        <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-patch-plus" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5"/>
+    </a>
+ <p>Add Cafe</p>
+</svg>
+</div>
+{% include "footer.html" %}

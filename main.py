@@ -11,6 +11,8 @@ import os
 
 app=Flask(__name__)
 Bootstrap5(app)
+print(os.environ.get("FLASK_KEY21"))
+print(os.environ.get("DB_URI21"))
 app.config["SECRET_KEY"]=os.environ.get("FLASK_KEY21")
 
 login_manager=LoginManager()
@@ -34,6 +36,7 @@ class Users(db.Model):
     name:Mapped[str]=mapped_column(String,nullable=False)
     email:Mapped[str]=mapped_column(String,unique=True)
     password:Mapped[str]=mapped_column(String,nullable=False)
+
 with app.app_context():
     db.create_all()
 
@@ -66,6 +69,7 @@ def home():
 def post(post_id):
     data_all=requests.get("https://pythonproject20.onrender.com/all")
     data_all=data_all.json()["data"]
+    print(data_all)
     object=0
     for i in data_all:
         if post_id==i["id"]:
@@ -83,7 +87,6 @@ def delete_cafe(post_id):
         return "sorry there is nothing to delete"
 
 @app.route("/new_cafe",methods=["GET","POST"])
-
 def add_cafe():
     form=Cafe_Form()
     if form.validate_on_submit():
@@ -96,7 +99,7 @@ def add_cafe():
         post_request=requests.post("https://pythonproject20.onrender.com/add",data=data)
         print(post_request.status_code)
         return redirect(url_for("home"))
-    return render_template("new_cafe.html",form=form,current_user=current_user)
+    return render_template("new_cafe.html",form=form)
 
 @app.route("/register",methods=["GET","POST"])
 def register():
@@ -134,7 +137,7 @@ def logout():
 
 
 if __name__=="__main__":
-    app.run(debug=False)
+    app.run(debug=True)
 
 
 

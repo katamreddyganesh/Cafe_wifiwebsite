@@ -1,4 +1,4 @@
-import requests
+
 from flask import Flask,render_template,request,redirect,url_for
 from flask_bootstrap import Bootstrap5
 from forms import Cafe_Form,Login_Form,Register_Form

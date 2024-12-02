@@ -105,14 +105,14 @@ def add_cafe():
 def register():
     form=Register_Form()
     if form.validate_on_submit():
-        data=Users(
-            name=request.form["name"],
-            email=request.form["email"],
-            password=request.form["password"]
+        new_user=Users(
+            name=request.form.get("name"),
+            email=request.form.get("email"),
+            password=request.form.get("password")
         )
-        db.session.add(data)
+        db.session.add(new_user)
         db.session.commit()
-        login_user(data)
+        login_user(new_user)
         return redirect(url_for("home"))
     return render_template("register.html",form=form)
 

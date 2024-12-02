@@ -30,7 +30,7 @@ app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DB_URI21","sqlite:///C:/Us
 db=SQLAlchemy(model_class=Base)
 db.init_app(app)
 
-class Users(db.Model):
+class Users(db.Model,UserMixin):
     __tablename__ = "users"
     id:Mapped[int]=mapped_column(Integer,primary_key=True)
     name:Mapped[str]=mapped_column(String,nullable=False)

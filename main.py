@@ -103,32 +103,34 @@ def add_cafe():
 
 @app.route("/register",methods=["GET","POST"])
 def register():
-    form=Register_Form()
-    if form.validate_on_submit():
+    if request.method=="POST":
+        print("hii")
         new_user=Users(
             name=request.form.get("name"),
             email=request.form.get("email"),
             password=request.form.get("password")
         )
+        print(request.form.get("name"),"name of register")
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
         return redirect(url_for("home"))
-    return render_template("register.html",form=form)
+    return render_template("register.html")
 
 @app.route("/login",methods=["GET","POST"])
 def login():
-    form=Login_Form()
-    if form.validate_on_submit():
-        email=request.form["email"]
+
+    if request.method=="POST":
+        email=request.form.get("email")
         data=db.session.execute(db.select(Users).where(Users.email==email))
         data=data.scalar()
+        print(data,"login_data")
         if data:
             print(data,"login area")
             login_user(data)
             return redirect(url_for("home"))
 
-    return render_template("login.html",form=form)
+    return render_template("login.html")
 
 @app.route("/logout")
 def logout():
@@ -137,7 +139,7 @@ def logout():
 
 
 if __name__=="__main__":
-    app.run(debug=False)
+    app.run(debug=True)
 
 
 

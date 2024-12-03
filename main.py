@@ -128,22 +128,31 @@ def delete_cafe(post_id):
 @app.route("/new_cafe",methods=["GET","POST"])
 @login_required
 def add_cafe():
-    form=Cafe_Form()
-    if form.validate_on_submit():
-        print("name",request.form["name"])
+    if request.method=="POST":
+        print("name",request.form.get("image"))
         data={
-            "name":request.form["name"],
-            "img_url":request.form["img_url"],
-            "map_url":request.form["map_url"]
+            "name":request.form.get("name"),
+            "img_url":request.form.get("img_url"),
+            "map_url":request.form.get("map_url")
         }
-        post_request=requests.post("https://pythonproject20.onrender.com/add",data=data)
+        post_request = requests.post("https://pythonproject20.onrender.com/add", data=data)
         print(post_request.status_code)
         return redirect(url_for("home"))
-    return render_template("new_cafe.html",form=form)
+    # form=Cafe_Form()
+    # if form.validate_on_submit():
+    #     data = {
+    #                 "name":request.form["name"],
+    #                 "img_url":request.form["img_url"],
+    #                 "map_url":request.form["map_url"]
+    #             }
+    #     post_request=requests.post("https://pythonproject20.onrender.com/add",data=data)
+    #     print(post_request.status_code)
+    #     return redirect(url_for("home"))
+    return render_template("new_cafe.html")
 
 
 if __name__=="__main__":
-    app.run(debug=False)
+    app.run(debug=True)
 
 
 

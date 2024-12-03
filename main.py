@@ -5,7 +5,7 @@ from forms import Cafe_Form,Login_Form,Register_Form
 from sqlalchemy.orm import DeclarativeBase, Mapped,mapped_column
 from sqlalchemy import Integer,String
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import login_user,LoginManager,current_user,logout_user,UserMixin
+from flask_login import login_user,LoginManager,current_user,logout_user,UserMixin,login_required
 import os
 
 
@@ -65,42 +65,6 @@ def home():
     print(data_all)
     return render_template("index.html",data=data_all)
 
-@app.route("/cafe/<int:post_id>",methods=["GET"])
-def post(post_id):
-    data_all=requests.get("https://pythonproject20.onrender.com/all")
-    data_all=data_all.json()["data"]
-    print(data_all)
-    object=0
-    for i in data_all:
-        if post_id==i["id"]:
-            object=i
-            break
-    return render_template("post.html",post=object,current_user=current_user)
-
-
-@app.route("/delete_post/<int:post_id>")
-def delete_cafe(post_id):
-    data=requests.delete(f"https://pythonproject20.onrender.com/report-closed/{post_id}",params={"api-key":"TopSecretAPIKey"})
-    if data.status_code==200:
-        return redirect(url_for('home'))
-    else:
-        return "sorry there is nothing to delete"
-
-@app.route("/new_cafe",methods=["GET","POST"])
-def add_cafe():
-    form=Cafe_Form()
-    if form.validate_on_submit():
-        print("name",request.form["name"])
-        data={
-            "name":request.form["name"],
-            "img_url":request.form["img_url"],
-            "map_url":request.form["map_url"]
-        }
-        post_request=requests.post("https://pythonproject20.onrender.com/add",data=data)
-        print(post_request.status_code)
-        return redirect(url_for("home"))
-    return render_template("new_cafe.html",form=form)
-
 @app.route("/register",methods=["GET","POST"])
 def register():
     if request.method=="POST":
@@ -119,7 +83,6 @@ def register():
 
 @app.route("/login",methods=["GET","POST"])
 def login():
-
     if request.method=="POST":
         email=request.form.get("email")
         data=db.session.execute(db.select(Users).where(Users.email==email))
@@ -129,6 +92,8 @@ def login():
             print(data,"login area")
             login_user(data)
             return redirect(url_for("home"))
+        else:
+            return redirect(url_for("register"))
 
     return render_template("login.html")
 
@@ -136,6 +101,45 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+
+@app.route("/cafe/<int:post_id>",methods=["GET"])
+@login_required
+def post(post_id):
+    data_all=requests.get("https://pythonproject20.onrender.com/all")
+    data_all=data_all.json()["data"]
+    print(data_all)
+    object=0
+    for i in data_all:
+        if post_id==i["id"]:
+            object=i
+            break
+    return render_template("post.html",post=object,current_user=current_user)
+
+@app.route("/delete_post/<int:post_id>")
+@login_required
+def delete_cafe(post_id):
+    data=requests.delete(f"https://pythonproject20.onrender.com/report-closed/{post_id}",params={"api-key":"TopSecretAPIKey"})
+    if data.status_code==200:
+        return redirect(url_for('home'))
+    else:
+        return "sorry there is nothing to delete"
+
+@app.route("/new_cafe",methods=["GET","POST"])
+@login_required
+def add_cafe():
+    form=Cafe_Form()
+    if form.validate_on_submit():
+        print("name",request.form["name"])
+        data={
+            "name":request.form["name"],
+            "img_url":request.form["img_url"],
+            "map_url":request.form["map_url"]
+        }
+        post_request=requests.post("https://pythonproject20.onrender.com/add",data=data)
+        print(post_request.status_code)
+        return redirect(url_for("home"))
+    return render_template("new_cafe.html",form=form)
 
 
 if __name__=="__main__":

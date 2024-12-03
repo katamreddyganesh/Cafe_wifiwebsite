@@ -151,6 +151,7 @@ def add_cafe():
     return render_template("new_cafe.html")
 
 
+
 if __name__=="__main__":
     app.run(debug=False)
 
